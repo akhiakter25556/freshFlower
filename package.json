@@ -1,0 +1,31 @@
+{
+  "name": "freshflower",
+  "version": "1.0.0",
+  "description": "Premium online flower shop with fresh, hand-picked flowers",
+  "main": "app.js",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "build": "echo 'Build script here'",
+    "test": "echo 'Test script here'",
+    "lint": "echo 'Lint script here'"
+  },
+  "keywords": [
+    "flowers",
+    "e-commerce",
+    "online-shop",
+    "bouquets",
+    "flower-delivery"
+  ],
+  "author": "FreshFlower Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/freshflower.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/freshflower/issues"
+  },
+  "homepage": "https://freshflower.com",
+  "devDependencies": {},
+  "dependencies": {}
+}

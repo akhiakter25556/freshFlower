@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flower Shop - Fresh & Beautiful Flowers</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * {
+            scroll-behavior: smooth;
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .flower-card {
+            transition: all 0.3s ease;
+        }
+        .flower-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.6s ease-in;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .counter {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #ff3399;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-white shadow-lg z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <h1 class="text-3xl font-bold gradient-text">Flower<span class="text-pink-500">.</span></h1>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#home" class="text-gray-700 hover:text-pink-500 transition">Home</a>
+                    <a href="#features" class="text-gray-700 hover:text-pink-500 transition">Features</a>
+                    <a href="#testimonials" class="text-gray-700 hover:text-pink-500 transition">Testimonials</a>
+                    <a href="#contact" class="text-gray-700 hover:text-pink-500 transition">Contact</a>
+                </div>
+                <div class="flex space-x-4">
+                    <button class="text-pink-500 text-xl"><i class="fas fa-heart"></i></button>
+                    <button class="text-pink-500 text-xl"><i class="fas fa-shopping-cart"></i></button>
+                    <button class="text-pink-500 text-xl"><i class="fas fa-user"></i></button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="pt-32 pb-20 bg-gradient-to-r from-pink-50 to-purple-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="animate-fade-in">
+                    <h2 class="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+                        Fresh <span class="gradient-text">Flowers</span> for Every Moment
+                    </h2>
+                    <p class="text-xl text-gray-600 mb-8">
+                        Discover our beautiful collection of fresh, hand-picked flowers. Perfect for any occasion, delivered with love.
+                    </p>
+                    <div class="flex space-x-4">
+                        <button class="bg-pink-500 hover:bg-pink-600 text-white px-8 py-3 rounded-lg font-semibold transition transform hover:scale-105">
+                            Shop Now
+                        </button>
+                        <button class="border-2 border-pink-500 text-pink-500 hover:bg-pink-50 px-8 py-3 rounded-lg font-semibold transition">
+                            Learn More
+                        </button>
+                    </div>
+                </div>
+                <div class="animate-fade-in">
+                    <img src="img3/fl1.jpeg" alt="Fresh Flowers" class="rounded-lg shadow-2xl w-full h-96 object-cover">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div class="text-center">
+                    <div class="counter" id="counter1">0</div>
+                    <p class="text-gray-600 mt-2">Happy Customers</p>
+                </div>
+                <div class="text-center">
+                    <div class="counter" id="counter2">0</div>
+                    <p class="text-gray-600 mt-2">Flowers Delivered</p>
+                </div>
+                <div class="text-center">
+                    <div class="counter" id="counter3">0</div>
+                    <p class="text-gray-600 mt-2">Years Experience</p>
+                </div>
+                <div class="text-center">
+                    <div class="counter" id="counter4">0</div>
+                    <p class="text-gray-600 mt-2">Cities Covered</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-center mb-16 gradient-text">Why Choose Us</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="flower-card bg-white p-8 rounded-lg shadow-lg">
+                    <div class="text-4xl text-pink-500 mb-4"><i class="fas fa-truck"></i></div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Free Delivery</h3>
+                    <p class="text-gray-600">Fast and free delivery on all orders. We ensure your flowers arrive fresh and beautiful.</p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="flower-card bg-white p-8 rounded-lg shadow-lg">
+                    <div class="text-4xl text-pink-500 mb-4"><i class="fas fa-lock"></i></div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Secure Payment</h3>
+                    <p class="text-gray-600">Your payment is safe with us. We use industry-leading encryption technology.</p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="flower-card bg-white p-8 rounded-lg shadow-lg">
+                    <div class="text-4xl text-pink-500 mb-4"><i class="fas fa-undo"></i></div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Easy Returns</h3>
+                    <p class="text-gray-600">Not satisfied? Return within 10 days for a full refund. No questions asked.</p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="flower-card bg-white p-8 rounded-lg shadow-lg">
+                    <div class="text-4xl text-pink-500 mb-4"><i class="fas fa-headset"></i></div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">24/7 Support</h3>
+                    <p class="text-gray-600">Our customer support team is always ready to help you with any questions.</p>
+                </div>
+
+                <!-- Feature 5 -->
+                <div class="flower-card bg-white p-8 rounded-lg shadow-lg">
+                    <div class="text-4xl text-pink-500 mb-4"><i class="fas fa-leaf"></i></div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Fresh Flowers</h3>
+                    <p class="text-gray-600">All our flowers are hand-picked and guaranteed to be fresh for 7 days.</p>
+                </div>
+
+                <!-- Feature 6 -->
+                <div class="flower-card bg-white p-8 rounded-lg shadow-lg">
+                    <div class="text-4xl text-pink-500 mb-4"><i class="fas fa-gift"></i></div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Special Gifts</h3>
+                    <p class="text-gray-600">Add a personalized message or gift card to make your order extra special.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-center mb-16 gradient-text">What Our Customers Say</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-gray-50 p-8 rounded-lg shadow-lg">
+                    <div class="flex items-center mb-4">
+                        <img src="img3/g2.jpeg" alt="Customer" class="w-12 h-12 rounded-full mr-4 object-cover">
+                        <div>
+                            <h4 class="font-bold text-gray-900">Ruhi Akter</h4>
+                            <p class="text-pink-500"><i class="fas fa-star"></i> <i class="fas fa-star"></i> <i class="fas fa-star"></i> <i class="fas fa-star"></i> <i class="fas fa-star"></i></p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">"Amazing quality flowers! They arrived fresh and beautiful. Highly recommended!"</p>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="bg-gray-50 p-8 rounded-lg shadow-lg">
+                    <div class="flex items-center mb-4">
+                        <img src="img3/g3.jpeg" alt="Customer" class="w-12 h-12 rounded-full mr-4 object-cover">
+                        <div>
+                            <h4 class="font-bold text-gray-900">Akhi Akter</h4>
+                            <p class="text-pink-500"><i class="fas fa-star"></i> <i class="fas fa-star"></i> <i class="fas fa-star"></i> <i class="fas fa-star"></i> <i class="fas fa-star"></i></p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">"Fast delivery and excellent customer service. Will definitely order again!"</p>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="bg-gray-50 p-8 rounded-lg shadow-lg">
+                    <div class="flex items-center mb-4">
+                        <img src="img3/g4.jpeg" alt="Customer" class="w-12 h-12 rounded-full mr-4 object-cover">
+                        <div>
+                            <h4 class="font-bold text-gray-900">Rusha Akter</h4>
+                            <p class="text-pink-500"><i class="fas fa-star"></i> <i class="fas fa-star"></i> <i class="fas fa-star"></i> <i class="fas fa-star"></i> <i class="fas fa-star"></i></p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">"Perfect for my special day! The flowers were exactly as shown in the pictures."</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="py-20 bg-gradient-to-r from-pink-500 to-purple-600">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl font-bold text-white mb-6">Subscribe to Our Newsletter</h2>
+            <p class="text-xl text-pink-100 mb-8">Get exclusive offers and updates about our latest flower collections.</p>
+            <div class="flex flex-col sm:flex-row gap-4">
+                <input type="email" placeholder="Enter your email" class="flex-1 px-6 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-300">
+                <button class="bg-white text-pink-500 hover:bg-pink-50 px-8 py-3 rounded-lg font-semibold transition">
+                    Subscribe
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-center mb-16 gradient-text">Get In Touch</h2>
+            <div class="grid md:grid-cols-2 gap-12">
+                <div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6">Contact Information</h3>
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <i class="fas fa-map-marker-alt text-pink-500 text-2xl mr-4 mt-1"></i>
+                            <div>
+                                <h4 class="font-bold text-gray-900">Address</h4>
+                                <p class="text-gray-600">Mumbai, India - 400104</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-phone text-pink-500 text-2xl mr-4 mt-1"></i>
+                            <div>
+                                <h4 class="font-bold text-gray-900">Phone</h4>
+                                <p class="text-gray-600">+123-456-7890</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-envelope text-pink-500 text-2xl mr-4 mt-1"></i>
+                            <div>
+                                <h4 class="font-bold text-gray-900">Email</h4>
+                                <p class="text-gray-600">akhi@gmail.com</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <form class="space-y-4">
+                    <input type="text" placeholder="Your Name" class="w-full px-6 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500">
+                    <input type="email" placeholder="Your Email" class="w-full px-6 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500">
+                    <textarea placeholder="Your Message" rows="5" class="w-full px-6 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"></textarea>
+                    <button type="submit" class="w-full bg-pink-500 hover:bg-pink-600 text-white px-6 py-3 rounded-lg font-semibold transition">
+                        Send Message
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <h4 class="text-xl font-bold mb-4">Flower<span class="text-pink-500">.</span></h4>
+                    <p class="text-gray-400">Your trusted source for fresh, beautiful flowers.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Quick Links</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-pink-500">Home</a></li>
+                        <li><a href="#" class="hover:text-pink-500">Products</a></li>
+                        <li><a href="#" class="hover:text-pink-500">About</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Support</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-pink-500">Contact</a></li>
+                        <li><a href="#" class="hover:text-pink-500">FAQ</a></li>
+                        <li><a href="#" class="hover:text-pink-500">Returns</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Follow Us</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-pink-500"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-pink-500"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-pink-500"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 Flower Shop. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Counter Animation
+        function animateCounter(id, target, duration = 2000) {
+            const element = document.getElementById(id);
+            const increment = target / (duration / 16);
+            let current = 0;
+
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    element.textContent = target + '+';
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(current);
+                }
+            }, 16);
+        }
+
+        // Start counters when page loads
+        window.addEventListener('load', () => {
+            animateCounter('counter1', 5000);
+            animateCounter('counter2', 50000);
+            animateCounter('counter3', 15);
+            animateCounter('counter4', 25);
+        });
+
+        // Smooth scroll for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Newsletter subscription
+        document.querySelector('input[type="email"]').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                alert('Thank you for subscribing!');
+                this.value = '';
+            }
+        });
+    </script>
+</body>
+</html>

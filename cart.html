@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart - Flower Shop</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex items-center justify-between mb-4">
+                <a href="ECO.HTML" class="text-white hover:text-gray-200 transition">
+                    <i class="fas fa-arrow-left"></i> Back to Shop
+                </a>
+                <h1 class="text-4xl font-bold">Shopping Cart</h1>
+                <div></div>
+            </div>
+            <nav class="text-sm">
+                <a href="ECO.HTML" class="hover:text-gray-200">HOME</a>
+                <span class="mx-2">→</span>
+                <span>CART</span>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Cart Items -->
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h2 class="text-2xl font-bold mb-6 text-gray-800">Cart Items</h2>
+                    
+                    <div id="cart-items-container">
+                        <!-- Items will be added here by JavaScript -->
+                    </div>
+
+                    <div id="empty-cart" class="text-center py-12">
+                        <i class="fas fa-shopping-cart text-6xl text-gray-300 mb-4"></i>
+                        <p class="text-xl text-gray-500">Your cart is empty</p>
+                        <a href="ECO.HTML" class="inline-block mt-4 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
+                            Continue Shopping
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cart Summary -->
+            <div class="lg:col-span-1">
+                <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg shadow-lg p-6 sticky top-20">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6">Order Summary</h3>
+                    
+                    <div class="space-y-4 mb-6">
+                        <div class="flex justify-between text-gray-700">
+                            <span>Subtotal:</span>
+                            <span id="subtotal">$0.00</span>
+                        </div>
+                        <div class="flex justify-between text-gray-700">
+                            <span>Shipping:</span>
+                            <span id="shipping">$0.00</span>
+                        </div>
+                        <div class="flex justify-between text-gray-700">
+                            <span>Tax:</span>
+                            <span id="tax">$0.00</span>
+                        </div>
+                        <div class="border-t-2 border-gray-300 pt-4 flex justify-between text-xl font-bold text-gray-900">
+                            <span>Total:</span>
+                            <span id="total">$0.00</span>
+                        </div>
+                    </div>
+
+                    <!-- Shipping Info -->
+                    <div class="mb-6">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Country</label>
+                        <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option>United States</option>
+                            <option>Canada</option>
+                            <option>India</option>
+                            <option>UK</option>
+                        </select>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">State/City</label>
+                            <input type="text" placeholder="State" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Zip Code</label>
+                            <input type="text" placeholder="Zip" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                    </div>
+
+                    <button class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition mb-3">
+                        Update Shipping
+                    </button>
+
+                    <!-- Coupon Code -->
+                    <div class="mb-6 pt-6 border-t-2 border-gray-300">
+                        <h4 class="font-semibold text-gray-800 mb-3">Coupon Code</h4>
+                        <p class="text-sm text-gray-600 mb-3">Enter your coupon code if you have one</p>
+                        <div class="flex gap-2">
+                            <input type="text" placeholder="Enter Coupon Code" class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition font-semibold">
+                                Apply
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Checkout Button -->
+                    <button class="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-3 rounded-lg font-bold text-lg hover:shadow-lg transition">
+                        Proceed to Checkout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Newsletter Section -->
+    <div class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-12 mt-12">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div>
+                    <h3 class="text-2xl font-bold mb-2">Subscribe Newsletter</h3>
+                    <p class="text-blue-100">By subscribing you agree to our Privacy Policy</p>
+                </div>
+                <div class="flex gap-2 w-full md:w-auto">
+                    <input type="email" placeholder="Email Address" class="flex-1 px-4 py-3 rounded-lg text-gray-800 focus:outline-none">
+                    <button class="bg-yellow-400 text-gray-800 px-6 py-3 rounded-lg font-semibold hover:bg-yellow-500 transition">
+                        Subscribe Now
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-300 py-12">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <h4 class="text-white font-bold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-white transition">Home</a></li>
+                        <li><a href="#" class="hover:text-white transition">Products</a></li>
+                        <li><a href="#" class="hover:text-white transition">About</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-4">Essential</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-white transition">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-white transition">Contact Us</a></li>
+                        <li><a href="#" class="hover:text-white transition">FAQs</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-4">Our Services</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-white transition">Delivery</a></li>
+                        <li><a href="#" class="hover:text-white transition">Support</a></li>
+                        <li><a href="#" class="hover:text-white transition">Returns</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-4">Follow Us</h4>
+                    <div class="flex gap-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 pt-8 text-center">
+                <p>&copy; 2024 Flower Shop. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Load cart from localStorage
+        function loadCart() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const container = document.getElementById('cart-items-container');
+            const emptyCart = document.getElementById('empty-cart');
+
+            if (cart.length === 0) {
+                container.innerHTML = '';
+                emptyCart.style.display = 'block';
+                updateTotals(0);
+                return;
+            }
+
+            emptyCart.style.display = 'none';
+            container.innerHTML = '';
+
+            cart.forEach((item, index) => {
+                const itemHTML = `
+                    <div class="flex items-center gap-4 pb-6 border-b border-gray-200 last:border-b-0">
+                        <div class="w-24 h-24 bg-gray-200 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-flower text-4xl text-pink-500"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-semibold text-gray-800 text-lg">${item.name}</h4>
+                            <p class="text-gray-600">${item.price}</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="decreaseQty(${index})" class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-100">-</button>
+                            <input type="number" value="1" class="w-12 text-center border border-gray-300 rounded" readonly>
+                            <button onclick="increaseQty(${index})" class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-100">+</button>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-semibold text-gray-800">${item.price}</p>
+                        </div>
+                        <button onclick="removeItem(${index})" class="text-red-500 hover:text-red-700 transition">
+                            <i class="fas fa-times text-xl"></i>
+                        </button>
+                    </div>
+                `;
+                container.innerHTML += itemHTML;
+            });
+
+            updateTotals(cart.length);
+        }
+
+        function updateTotals(itemCount) {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let subtotal = 0;
+
+            cart.forEach(item => {
+                const price = parseFloat(item.price.replace('$', ''));
+                subtotal += price;
+            });
+
+            const shipping = subtotal > 0 ? 10 : 0;
+            const tax = subtotal * 0.1;
+            const total = subtotal + shipping + tax;
+
+            document.getElementById('subtotal').textContent = '$' + subtotal.toFixed(2);
+            document.getElementById('shipping').textContent = '$' + shipping.toFixed(2);
+            document.getElementById('tax').textContent = '$' + tax.toFixed(2);
+            document.getElementById('total').textContent = '$' + total.toFixed(2);
+        }
+
+        function removeItem(index) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart.splice(index, 1);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            loadCart();
+        }
+
+        function increaseQty(index) {
+            // Quantity logic can be added here
+        }
+
+        function decreaseQty(index) {
+            // Quantity logic can be added here
+        }
+
+        // Load cart on page load
+        loadCart();
+    </script>
+</body>
+</html>
