@@ -4,10 +4,11 @@
   "description": "Premium online flower shop with fresh, hand-picked flowers",
   "main": "app.js",
   "scripts": {
-    "start": "python -m http.server 8000",
-    "build": "echo 'Build script here'",
-    "test": "echo 'Test script here'",
-    "lint": "echo 'Lint script here'"
+    "start": "npx http-server -p 8000 -c-1",
+    "dev": "npx http-server -p 8000 -c-1 -o",
+    "build": "echo 'Static site - no build needed'",
+    "test": "echo 'No tests configured'",
+    "lint": "echo 'No linting configured'"
   },
   "keywords": [
     "flowers",

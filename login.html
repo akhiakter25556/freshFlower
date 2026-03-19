@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FreshFlower - Login / Sign Up</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- ✅ Google Identity Services SDK -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            min-height: 100vh;
+            background: #0f0f1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: -200px; right: -200px;
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(255,51,153,0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -200px; left: -200px;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(255,105,180,0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .bg-dots { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+        .dot {
+            position: absolute; width: 4px; height: 4px;
+            border-radius: 50%; background: rgba(255,51,153,0.3);
+            animation: float 6s infinite ease-in-out;
+        }
+        .dot:nth-child(1) { top:10%; left:15%; animation-delay:0s; }
+        .dot:nth-child(2) { top:20%; left:80%; animation-delay:1s; width:6px; height:6px; }
+        .dot:nth-child(3) { top:60%; left:10%; animation-delay:2s; }
+        .dot:nth-child(4) { top:80%; left:75%; animation-delay:0.5s; width:5px; height:5px; }
+        .dot:nth-child(5) { top:40%; left:90%; animation-delay:1.5s; }
+        .dot:nth-child(6) { top:70%; left:30%; animation-delay:3s; width:3px; height:3px; }
+        @keyframes float {
+            0%,100% { transform:translateY(0); opacity:0.3; }
+            50%      { transform:translateY(-12px); opacity:0.7; }
+        }
+
+        .auth-card {
+            position: relative; z-index: 1;
+            background: rgba(255,255,255,0.04);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 24px;
+            width: 100%; max-width: 420px;
+            padding: 40px 36px;
+            animation: slideUp 0.5s ease;
+        }
+        @keyframes slideUp {
+            from { opacity:0; transform:translateY(24px); }
+            to   { opacity:1; transform:translateY(0); }
+        }
+
+        .logo-area { text-align:center; margin-bottom:28px; }
+        .logo-text { font-family:'Playfair Display',serif; font-size:28px; color:#fff; letter-spacing:1px; }
+        .logo-text span { color:#ff3399; }
+        .logo-area p { font-size:13px; color:rgba(255,255,255,0.4); margin-top:4px; }
+
+        .tab-group {
+            display:flex; background:rgba(255,255,255,0.05);
+            border-radius:10px; padding:4px; margin-bottom:28px;
+        }
+        .tab-btn {
+            flex:1; padding:9px 0; border:none;
+            background:transparent; color:rgba(255,255,255,0.4);
+            font-family:'DM Sans',sans-serif; font-size:14px; font-weight:500;
+            border-radius:8px; cursor:pointer; transition:all 0.2s;
+        }
+        .tab-btn.active { background:#ff3399; color:#fff; }
+
+        .form-section { display:none; }
+        .form-section.active { display:block; }
+
+        .form-group { margin-bottom:16px; }
+        .form-group label {
+            display:block; font-size:12px; font-weight:500;
+            color:rgba(255,255,255,0.5); margin-bottom:7px;
+            letter-spacing:0.5px; text-transform:uppercase;
+        }
+        .form-group input {
+            width:100%; padding:12px 14px;
+            background:rgba(255,255,255,0.06);
+            border:1px solid rgba(255,255,255,0.1);
+            border-radius:10px; color:#fff;
+            font-family:'DM Sans',sans-serif; font-size:14px;
+            outline:none; transition:border 0.2s, background 0.2s;
+        }
+        .form-group input::placeholder { color:rgba(255,255,255,0.25); }
+        .form-group input:focus {
+            border-color:#ff3399;
+            background:rgba(255,51,153,0.07);
+        }
+
+        .pass-wrap { position:relative; }
+        .pass-wrap input { padding-right:42px; }
+        .pass-toggle {
+            position:absolute; right:12px; top:50%;
+            transform:translateY(-50%);
+            background:none; border:none;
+            color:rgba(255,255,255,0.3);
+            cursor:pointer; font-size:14px; transition:color 0.2s;
+        }
+        .pass-toggle:hover { color:#ff3399; }
+
+        .forgot-link {
+            display:block; text-align:right; font-size:12px;
+            color:#ff3399; text-decoration:none;
+            margin-top:-8px; margin-bottom:20px;
+        }
+        .forgot-link:hover { text-decoration:underline; }
+
+        .submit-btn {
+            width:100%; padding:13px;
+            background:#ff3399; color:#fff; border:none;
+            border-radius:10px; font-family:'DM Sans',sans-serif;
+            font-size:15px; font-weight:600; cursor:pointer;
+            transition:background 0.2s, transform 0.1s;
+        }
+        .submit-btn:hover { background:#e62e88; }
+        .submit-btn:active { transform:scale(0.98); }
+
+        .msg-box {
+            display:none; padding:10px 14px; border-radius:8px;
+            font-size:13px; margin-bottom:16px; text-align:center;
+        }
+        .msg-box.error   { background:rgba(226,75,74,0.15); color:#f09595; border:1px solid rgba(226,75,74,0.3); }
+        .msg-box.success { background:rgba(29,158,117,0.15); color:#5dcaa5; border:1px solid rgba(29,158,117,0.3); }
+        .msg-box.show    { display:block; }
+
+        .or-divider {
+            display:flex; align-items:center; gap:10px;
+            margin:20px 0; color:rgba(255,255,255,0.2); font-size:12px;
+        }
+        .or-divider::before,.or-divider::after {
+            content:''; flex:1; height:1px; background:rgba(255,255,255,0.08);
+        }
+
+        /* Google button center wrapper */
+        .google-btn-wrap {
+            display:flex; justify-content:center; min-height:44px;
+        }
+
+        .name-row { display:flex; gap:12px; }
+        .name-row .form-group { flex:1; }
+
+        .check-group {
+            display:flex; align-items:flex-start; gap:10px; margin-bottom:18px;
+        }
+        .check-group input[type="checkbox"] {
+            width:16px; height:16px; margin-top:2px;
+            accent-color:#ff3399; cursor:pointer;
+        }
+        .check-group label {
+            font-size:12px; color:rgba(255,255,255,0.4);
+            text-transform:none; letter-spacing:0; cursor:pointer;
+        }
+        .check-group label a { color:#ff3399; text-decoration:none; }
+
+        .back-link {
+            display:block; text-align:center; margin-top:22px;
+            font-size:13px; color:rgba(255,255,255,0.35); text-decoration:none;
+        }
+        .back-link:hover { color:#ff3399; }
+
+        .loading {
+            display:none; text-align:center;
+            color:rgba(255,255,255,0.5); font-size:13px; margin-top:10px;
+        }
+        .loading.show { display:block; }
+        .loading i { margin-right:6px; animation:spin 1s linear infinite; display:inline-block; }
+        @keyframes spin { to { transform:rotate(360deg); } }
+    </style>
+</head>
+
+<body>
+
+<div class="bg-dots">
+    <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+</div>
+
+<div class="auth-card">
+
+    <div class="logo-area">
+        <div class="logo-text">Fresh<span>Flower</span></div>
+        <p>Premium flowers delivered with love</p>
+    </div>
+
+    <div class="tab-group">
+        <button class="tab-btn active" id="tab-login"  onclick="switchTab('login')">Login</button>
+        <button class="tab-btn"        id="tab-signup" onclick="switchTab('signup')">Sign Up</button>
+    </div>
+
+    <!-- ===== LOGIN FORM ===== -->
+    <div class="form-section active" id="login-form">
+
+        <div class="msg-box" id="login-msg"></div>
+
+        <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="login-email" placeholder="you@example.com">
+        </div>
+
+        <div class="form-group">
+            <label>Password</label>
+            <div class="pass-wrap">
+                <input type="password" id="login-pass" placeholder="Enter your password">
+                <button class="pass-toggle" onclick="togglePass('login-pass', this)">
+                    <i class="fas fa-eye"></i>
+                </button>
+            </div>
+        </div>
+
+        <a href="#" class="forgot-link">Forgot password?</a>
+
+        <button class="submit-btn" onclick="handleLogin()">
+            <i class="fas fa-sign-in-alt" style="margin-right:8px;"></i> Login
+        </button>
+
+        <div class="or-divider">or continue with</div>
+
+        <!--
+        ============================================================
+        ✅ GOOGLE SIGN-IN BUTTON
+        নিচের data-client_id তে তোমার Client ID বসাও
+        ============================================================
+        -->
+        <div id="g_id_onload"
+            data-client_id="YOUR_GOOGLE_CLIENT_ID_HERE"
+            data-callback="handleGoogleCredential"
+            data-auto_prompt="false">
+        </div>
+        <div class="google-btn-wrap">
+            <div class="g_id_signin"
+                data-type="standard"
+                data-size="large"
+                data-theme="filled_black"
+                data-text="signin_with"
+                data-shape="rectangular"
+                data-logo_alignment="left"
+                data-width="348">
+            </div>
+        </div>
+
+        <div class="loading" id="google-loading">
+            <i class="fas fa-circle-notch"></i> Signing in with Google...
+        </div>
+
+    </div>
+
+    <!-- ===== SIGNUP FORM ===== -->
+    <div class="form-section" id="signup-form">
+
+        <div class="msg-box" id="signup-msg"></div>
+
+        <div class="name-row">
+            <div class="form-group">
+                <label>First Name</label>
+                <input type="text" id="signup-fname" placeholder="John">
+            </div>
+            <div class="form-group">
+                <label>Last Name</label>
+                <input type="text" id="signup-lname" placeholder="Doe">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="signup-email" placeholder="you@example.com">
+        </div>
+
+        <div class="form-group">
+            <label>Password</label>
+            <div class="pass-wrap">
+                <input type="password" id="signup-pass" placeholder="Min. 6 characters">
+                <button class="pass-toggle" onclick="togglePass('signup-pass', this)">
+                    <i class="fas fa-eye"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Confirm Password</label>
+            <div class="pass-wrap">
+                <input type="password" id="signup-confirm" placeholder="Re-enter password">
+                <button class="pass-toggle" onclick="togglePass('signup-confirm', this)">
+                    <i class="fas fa-eye"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="check-group">
+            <input type="checkbox" id="agree-terms">
+            <label for="agree-terms">
+                I agree to the <a href="#">Terms & Conditions</a> and <a href="#">Privacy Policy</a>
+            </label>
+        </div>
+
+        <button class="submit-btn" onclick="handleSignup()">
+            <i class="fas fa-user-plus" style="margin-right:8px;"></i> Create Account
+        </button>
+
+        <div class="or-divider">or sign up with</div>
+
+        <!-- Google Sign-Up Button (same callback) -->
+        <div class="google-btn-wrap">
+            <div class="g_id_signin"
+                data-type="standard"
+                data-size="large"
+                data-theme="filled_black"
+                data-text="signup_with"
+                data-shape="rectangular"
+                data-logo_alignment="left"
+                data-width="348">
+            </div>
+        </div>
+
+    </div>
+
+    <a href="index.html" class="back-link">
+        <i class="fas fa-arrow-left"></i> Back to FreshFlower
+    </a>
+
+</div>
+
+<script>
+    // ============================================================
+    // ✅ STEP: নিচের লাইনে তোমার Google Client ID বসাও
+    // Google Console > Credentials > OAuth Client ID তে পাবে
+    // এরকম দেখতে: 12345678-abcd.apps.googleusercontent.com
+    // ============================================================
+    // (উপরের HTML এ data-client_id তেও same ID বসাতে হবে)
+
+
+    // ============================================================
+    // ✅ Google Login Callback
+    // Google login/signup সফল হলে এই function call হয়
+    // ============================================================
+    function handleGoogleCredential(response) {
+        document.getElementById('google-loading').classList.add('show');
+
+        // Google এর JWT token decode করো
+        const payload = parseJwt(response.credential);
+
+        // User info বের করো
+        onLoginSuccess({
+            name:     payload.name,
+            email:    payload.email,
+            picture:  payload.picture   // Google profile photo (optional)
+        });
+    }
+
+    // JWT token decoder
+    function parseJwt(token) {
+        const base64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+        const json   = decodeURIComponent(
+            atob(base64).split('').map(c =>
+                '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+            ).join('')
+        );
+        return JSON.parse(json);
+    }
+
+    // ============================================================
+    // Tab Switch
+    // ============================================================
+    function switchTab(tab) {
+        document.getElementById('login-form').classList.toggle('active',  tab === 'login');
+        document.getElementById('signup-form').classList.toggle('active', tab === 'signup');
+        document.getElementById('tab-login').classList.toggle('active',   tab === 'login');
+        document.getElementById('tab-signup').classList.toggle('active',  tab === 'signup');
+    }
+
+    // ============================================================
+    // Password Toggle
+    // ============================================================
+    function togglePass(inputId, btn) {
+        const input = document.getElementById(inputId);
+        const icon  = btn.querySelector('i');
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.className = 'fas fa-eye-slash';
+        } else {
+            input.type = 'password';
+            icon.className = 'fas fa-eye';
+        }
+    }
+
+    // ============================================================
+    // Message helper
+    // ============================================================
+    function showMsg(id, text, type) {
+        const box = document.getElementById(id);
+        box.textContent = text;
+        box.className = 'msg-box ' + type + ' show';
+    }
+    function hideMsg(id) {
+        document.getElementById(id).className = 'msg-box';
+    }
+
+    // ============================================================
+    // Email/Password Login
+    // ============================================================
+    function handleLogin() {
+        hideMsg('login-msg');
+        const email = document.getElementById('login-email').value.trim();
+        const pass  = document.getElementById('login-pass').value;
+
+        if (!email || !pass) {
+            showMsg('login-msg', 'Please fill in all fields.', 'error'); return;
+        }
+        if (!validateEmail(email)) {
+            showMsg('login-msg', 'Please enter a valid email.', 'error'); return;
+        }
+
+        const users = JSON.parse(localStorage.getItem('ff_users') || '[]');
+        const user  = users.find(u => u.email === email && u.pass === pass);
+
+        if (user) {
+            onLoginSuccess({ name: user.name, email: user.email });
+        } else if (email === 'admin@freshflower.com' && pass === 'admin123') {
+            onLoginSuccess({ name: 'Admin', email: email });
+        } else {
+            showMsg('login-msg', 'Invalid email or password.', 'error');
+        }
+    }
+
+    // ============================================================
+    // Sign Up
+    // ============================================================
+    function handleSignup() {
+        hideMsg('signup-msg');
+
+        const fname   = document.getElementById('signup-fname').value.trim();
+        const lname   = document.getElementById('signup-lname').value.trim();
+        const email   = document.getElementById('signup-email').value.trim();
+        const pass    = document.getElementById('signup-pass').value;
+        const confirm = document.getElementById('signup-confirm').value;
+        const agreed  = document.getElementById('agree-terms').checked;
+
+        if (!fname || !lname || !email || !pass || !confirm) {
+            showMsg('signup-msg', 'Please fill in all fields.', 'error'); return;
+        }
+        if (!validateEmail(email)) {
+            showMsg('signup-msg', 'Please enter a valid email.', 'error'); return;
+        }
+        if (pass.length < 6) {
+            showMsg('signup-msg', 'Password must be at least 6 characters.', 'error'); return;
+        }
+        if (pass !== confirm) {
+            showMsg('signup-msg', 'Passwords do not match.', 'error'); return;
+        }
+        if (!agreed) {
+            showMsg('signup-msg', 'Please agree to the Terms & Conditions.', 'error'); return;
+        }
+
+        const users = JSON.parse(localStorage.getItem('ff_users') || '[]');
+        if (users.find(u => u.email === email)) {
+            showMsg('signup-msg', 'This email is already registered.', 'error'); return;
+        }
+
+        const newUser = { name: fname + ' ' + lname, email, pass };
+        users.push(newUser);
+        localStorage.setItem('ff_users', JSON.stringify(users));
+
+        showMsg('signup-msg', 'Account created! Logging you in...', 'success');
+        setTimeout(() => onLoginSuccess({ name: newUser.name, email: newUser.email }), 1200);
+    }
+
+    // ============================================================
+    // ✅ Login Success — localStorage save + index.html redirect
+    // ============================================================
+    function onLoginSuccess(userData) {
+        localStorage.setItem('loggedInUser', JSON.stringify({
+            name:    userData.name,
+            email:   userData.email,
+            picture: userData.picture || null
+        }));
+        window.location.href = 'index.html';
+    }
+
+    function validateEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key !== 'Enter') return;
+        if (document.getElementById('login-form').classList.contains('active')) handleLogin();
+        else handleSignup();
+    });
+</script>
+
+</body>
+</html>

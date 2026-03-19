@@ -12,7 +12,7 @@
     <div class="w-full max-w-md">
         <!-- Logo -->
         <div class="text-center mb-8">
-            <a href="ECO.HTML" class="inline-block">
+            <a href="index.html" class="inline-block">
                 <h1 class="text-4xl font-bold">
                     <i class="fas fa-flower text-pink-500"></i>
                     <span class="text-gray-800">Fresh</span><span class="text-pink-500">Flower</span>
@@ -22,7 +22,7 @@
         </div>
 
         <!-- Back Button -->
-        <a href="ECO.HTML" class="inline-block mb-6 text-pink-500 hover:text-pink-700 transition">
+        <a href="index.html" class="inline-block mb-6 text-pink-500 hover:text-pink-700 transition">
             <i class="fas fa-arrow-left"></i> Back to Shop
         </a>
 
@@ -38,7 +38,7 @@
                 <p class="text-gray-600 mb-6">Sign in to your account</p>
 
                 <!-- Google Login -->
-                <div id="g_id_onload" data-client_id="YOUR_GOOGLE_CLIENT_ID" data-callback="handleCredentialResponse" class="mb-6"></div>
+                <div id="g_id_onload" data-client_id="587671407251-j0ir60ugeola02fudo4pvskdrhk1vfrn.apps.googleusercontent.com" data-callback="handleCredentialResponse" class="mb-6"></div>
                 <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="signin_with" data-shape="rectangular" data-logo_alignment="left"></div>
 
                 <div class="relative my-6">
@@ -76,7 +76,7 @@
                 <p class="text-gray-600 mb-6">Join our flower community</p>
 
                 <!-- Google Sign Up -->
-                <div id="g_id_onload_signup" data-client_id="YOUR_GOOGLE_CLIENT_ID" data-callback="handleCredentialResponse" class="mb-6"></div>
+                <div id="g_id_onload_signup" data-client_id="587671407251-j0ir60ugeola02fudo4pvskdrhk1vfrn.apps.googleusercontent.com" data-callback="handleCredentialResponse" class="mb-6"></div>
                 <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="signup_with" data-shape="rectangular" data-logo_alignment="left"></div>
 
                 <div class="relative my-6">
@@ -171,34 +171,64 @@
 
         // Google Login Handler
         function handleCredentialResponse(response) {
-            const token = response.credential;
+            console.log("Google Login Success - JWT Token:", response.credential);
             
             try {
-                const base64Url = token.split('.')[1];
+                // Decode JWT token to get user info
+                const base64Url = response.credential.split('.')[1];
                 const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
                 const jsonPayload = decodeURIComponent(atob(base64).split('').map((c) => {
                     return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
                 }).join(''));
 
                 const userData = JSON.parse(jsonPayload);
+                console.log("User Data:", userData);
                 
+                // Create user object
                 const user = {
                     name: userData.name,
                     email: userData.email,
                     picture: userData.picture,
-                    googleId: userData.sub
+                    googleId: userData.sub,
+                    loginMethod: 'google'
                 };
 
+                // Save to localStorage
                 localStorage.setItem('currentUser', JSON.stringify(user));
-                showMessage('Login successful! Redirecting...', 'success');
+                
+                // Add to users list if not exists
+                let users = JSON.parse(localStorage.getItem('users')) || [];
+                const existingUser = users.find(u => u.email === user.email);
+                if (!existingUser) {
+                    users.push(user);
+                    localStorage.setItem('users', JSON.stringify(users));
+                }
+                
+                showMessage('Google login successful! Redirecting...', 'success');
                 
                 setTimeout(() => {
-                    window.location.href = 'ECO.HTML';
+                    window.location.href = 'index.html?login=success';
                 }, 1500);
+                
             } catch (error) {
+                console.error('Google login error:', error);
                 showMessage('Google login failed. Please try email login.', 'error');
             }
         }
+
+        // Initialize Google Sign-In on page load
+        window.onload = function() {
+            if (typeof google !== 'undefined' && google.accounts) {
+                google.accounts.id.initialize({
+                    client_id: "587671407251-j0ir60ugeola02fudo4pvskdrhk1vfrn.apps.googleusercontent.com",
+                    callback: handleCredentialResponse
+                });
+                google.accounts.id.renderButton(
+                    document.querySelector('.g_id_signin'),
+                    { theme: "outline", size: "large" }
+                );
+            }
+        };
 
         // Email Login
         document.getElementById('loginForm').addEventListener('submit', function(e) {
@@ -214,7 +244,7 @@
                 localStorage.setItem('currentUser', JSON.stringify(user));
                 showMessage('Login successful! Redirecting...', 'success');
                 setTimeout(() => {
-                    window.location.href = 'ECO.HTML';
+                    window.location.href = 'index.html?login=success';
                 }, 1500);
             } else {
                 showMessage('Invalid email or password!', 'error');
@@ -254,7 +284,7 @@
 
             showMessage('Account created successfully! Redirecting...', 'success');
             setTimeout(() => {
-                window.location.href = 'ECO.HTML';
+                window.location.href = 'index.html?login=success';
             }, 1500);
         });
     </script>

@@ -15,18 +15,90 @@ document.querySelectorAll('.navbar a').forEach(link => {
     });
 });
 
+// User dropdown functionality
+const userBtnDropdown = document.getElementById('user-btn');
+const userDropdown = document.getElementById('user-dropdown');
+
+// Check login status on page load
+let currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+let isLoggedIn = currentUser && currentUser.email;
+
+if (userBtnDropdown && userDropdown) {
+    // Initialize dropdown state
+    updateDropdownView();
+    
+    userBtnDropdown.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        userDropdown.classList.toggle('show');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!userBtnDropdown.contains(e.target) && !userDropdown.contains(e.target)) {
+            userDropdown.classList.remove('show');
+        }
+    });
+
+    // Close dropdown when pressing Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            userDropdown.classList.remove('show');
+        }
+    });
+}
+
+function updateDropdownView() {
+    const authButtons = document.getElementById('auth-buttons');
+    const userMenu = document.getElementById('user-menu');
+    
+    // Update current user and login status
+    currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    isLoggedIn = currentUser && currentUser.email;
+    
+    if (isLoggedIn && currentUser.name) {
+        // Show user menu
+        authButtons?.classList.add('hidden');
+        userMenu?.classList.remove('hidden');
+        
+        // Update user info
+        const userName = document.getElementById('user-name');
+        const userEmail = document.getElementById('user-email');
+        const userAvatar = document.querySelector('.user-avatar i');
+        
+        if (userName) userName.textContent = currentUser.name;
+        if (userEmail) userEmail.textContent = currentUser.email;
+        
+        // Show Google profile picture if available
+        if (currentUser.picture && userAvatar) {
+            userAvatar.outerHTML = `<img src="${currentUser.picture}" alt="Profile" style="width: 24px; height: 24px; border-radius: 50%; object-fit: cover;">`;
+        }
+    } else {
+        // Show auth buttons
+        authButtons?.classList.remove('hidden');
+        userMenu?.classList.add('hidden');
+    }
+}
+
+function handleLogout() {
+    isLoggedIn = false;
+    currentUser = {};
+    localStorage.removeItem('currentUser');
+    
+    showToast('Logged out successfully', 'success');
+    updateDropdownView();
+    userDropdown.classList.remove('show');
+}
+
 // Modal functionality
 const wishlistBtn = document.getElementById('wishlist-btn');
 const cartBtn = document.getElementById('cart-btn');
-const userBtn = document.getElementById('user-btn');
 
 const wishlistModal = document.getElementById('wishlist-modal');
 const cartModal = document.getElementById('cart-modal');
-const userModal = document.getElementById('user-modal');
 
 const closeWishlist = document.getElementById('close-wishlist');
 const closeCart = document.getElementById('close-cart');
-const closeUser = document.getElementById('close-user');
 
 // Open modals
 wishlistBtn.addEventListener('click', (e) => {
@@ -39,11 +111,6 @@ cartBtn.addEventListener('click', (e) => {
     cartModal.classList.add('show');
 });
 
-userBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    userModal.classList.add('show');
-});
-
 // Close modals
 closeWishlist.addEventListener('click', () => {
     wishlistModal.classList.remove('show');
@@ -53,25 +120,13 @@ closeCart.addEventListener('click', () => {
     cartModal.classList.remove('show');
 });
 
-closeUser.addEventListener('click', () => {
-    userModal.classList.remove('show');
-});
-
 // Close modal when clicking outside
 window.addEventListener('click', (e) => {
     if (e.target === wishlistModal) wishlistModal.classList.remove('show');
     if (e.target === cartModal) cartModal.classList.remove('show');
-    if (e.target === userModal) userModal.classList.remove('show');
 });
 
-// Login/Signup buttons
-document.querySelector('.login-btn').addEventListener('click', () => {
-    window.location.href = 'test-login.html';
-});
-
-document.querySelector('.signup-btn').addEventListener('click', () => {
-    window.location.href = 'test-login.html';
-});
+// Login/Signup buttons - removed old modal buttons
 
 // Local storage
 let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
@@ -302,3 +357,88 @@ function trackAddToWishlist(productName) {
 
 // Track on page load
 trackPageView();
+
+// Check login status on page load and update dropdown
+document.addEventListener('DOMContentLoaded', function() {
+    updateDropdownView();
+    
+    // Check if user just logged in (from URL parameter or recent login)
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('login') === 'success' && isLoggedIn) {
+        showToast(`Welcome back, ${currentUser.name}!`, 'success');
+        // Clean up URL
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+});
+
+// Toast notification function
+function showToast(message, type = 'info') {
+    // Remove existing toast if any
+    const existingToast = document.querySelector('.toast-notification');
+    if (existingToast) {
+        existingToast.remove();
+    }
+
+    // Define colors for different types
+    const colors = {
+        success: 'linear-gradient(135deg, #11998e, #38ef7d)',
+        error: 'linear-gradient(135deg, #ff416c, #ff4b2b)',
+        warning: 'linear-gradient(135deg, #f093fb, #f5576c)',
+        info: 'linear-gradient(135deg, var(--pink), var(--hotpink))'
+    };
+
+    const icons = {
+        success: 'fas fa-check-circle',
+        error: 'fas fa-exclamation-circle',
+        warning: 'fas fa-exclamation-triangle',
+        info: 'fas fa-info-circle'
+    };
+
+    // Create toast element
+    const toast = document.createElement('div');
+    toast.className = 'toast-notification';
+    toast.innerHTML = `
+        <i class="${icons[type]}"></i>
+        <span>${message}</span>
+    `;
+    
+    // Add toast styles
+    toast.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: ${colors[type]};
+        color: white;
+        padding: 14px 20px;
+        border-radius: 12px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+        z-index: 10000;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 14px;
+        font-weight: 500;
+        transform: translateX(100%);
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        max-width: 350px;
+        backdrop-filter: blur(10px);
+    `;
+    
+    document.body.appendChild(toast);
+    
+    // Animate in
+    setTimeout(() => {
+        toast.style.transform = 'translateX(0)';
+    }, 100);
+    
+    // Remove after duration based on type
+    const duration = type === 'error' ? 5000 : 3000;
+    setTimeout(() => {
+        toast.style.transform = 'translateX(100%)';
+        setTimeout(() => {
+            if (toast.parentNode) {
+                toast.remove();
+            }
+        }, 400);
+    }, duration);
+}
